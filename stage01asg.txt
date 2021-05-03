@@ -1,0 +1,497 @@
+
+Stage -1 Assignment:
+
+
+
+	Data analysis/ manpulation (AWK)
+
+1. print EmployeeName and Totalpay who has Basepay greater than 100000 ?
+    
+ans)
+  
+	$ cat data.csv | awk '{if($4>10000) print $1,$7}'
+	
+	Id TotalPay
+	1 567595
+	2 538909
+	3 335279
+	4 332343 
+	5 326373
+	6 316285
+	7 315981
+	8 307899
+	10 302377
+	12 297608
+	13 294580
+
+
+1.a. Extract rows which has base value is greater than 10000 ?
+     
+ans)
+
+	$ cat data.csv | awk '{if($4>10000) print $0}'
+
+	Id EmployeeName JobTitle        BasePay OvertimePay OtherPay TotalPay TotalPayBenefits
+	1  NATHANIEL    GM              167411  0           400184   567595   567595
+	2  GARY         CAPTAIN         155966  245131      137811   538909   538909
+	3  ALBERT       CAPTAIN         212739  106088      16452    335279   335279
+	4  CHRISTOPHER  MECHANIC        77916   56120       198306   332343   332343
+	5  PATRICK      DEPUTYCHIEF     134401  9737        182234   326373   326373
+	6  DAVID        ASSTDEPUTY      118602  8601        189082   316285   316285
+	7  ALSON        BATTALIONCHIEF  92492   89062       134426   315981   315981
+	8  DAVID        DEPUTYDIRECTOR  256576  0           51322    307899   307899
+	10 JOANNE       CHIEF           285262  0           17115    302377   302377
+	12 PATRICIA     CAPTAIN         99722   87082       110804   297608   297608
+	13 EDWARD       EXECUTIVE       294580  0           0        294580   294580
+
+ 
+1.b.  Print only employe name and total pay
+      
+ans)
+
+	$ cat data.csv | awk '{print $1,$7}'
+
+	Id TotalPay
+	1 567595
+	2 538909
+	3 335279
+	4 332343
+	5 326373
+	6 316285
+	7 315981
+	8 307899
+	10 302377
+	12 297608
+	13 294580
+
+
+
+2. Print aggregate total pay of whose jobtitle is CAPTAIN ?
+	
+ans)
+	
+	$ cat data.csv | awk '{if($3=="CAPTAIN") sum=sum+$7} {print sum}' | uniq
+	
+	538909
+	874188
+	1171796
+
+   
+
+2.a. Extract the rows which jobtitle is CAPTAIN ?
+	
+ans)
+	  
+	  $ cat data.csv | awk '{if($3=="CAPTAIN") print $0}'
+
+	2  GARY         CAPTAIN         155966  245131      137811   538909   538909
+	3  ALBERT       CAPTAIN         212739  106088      16452    335279   335279
+	12 PATRICIA     CAPTAIN         99722   87082       110804   297608   297608
+
+
+2.b. Extract total pay and calculate sum
+	
+ans)
+	
+	$ cat data.csv | awk '{sum+=$7}{print sum}'
+	
+	0
+	567595
+	1106504
+	1441783
+	1774126
+	2100499
+	2416784
+	2732765
+	3040664
+	3343041
+	3640649
+	3935229
+
+
+3.Print jobtitle and overtimepay who has overtime pay between 7000 and 10000 ?
+	
+ans)
+
+	$ cat data.csv | awk '{if($5>=7000 && $5<=10000) print $3,$5}'
+	
+	DEPUTYCHIEF 9737
+	ASSTDEPUTY 8601
+
+3.a.From data.csv Extract jobtitle and overtime for column value range between 7000-10000 ?
+	
+ans)
+
+	$ cat data.csv | awk '{if($5>=7000 && $5<=10000) print $3,$5}'
+	
+	DEPUTYCHIEF 9737
+	ASSTDEPUTY 8601
+
+4.Print average Basepay ?
+
+	
+ans)
+	
+	$ cat data.csv | awk '{sum+=$4}END {print sum/NR-1}'
+	
+	157971
+
+=============================================>>>>>>>>>>>>>>>>>>>>>*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================================	
+	
+	MOVE FILES FROM ONE FOLDER TO THE RESPECTIVE FOLDERS
+
+a) create files in current directory
+
+	ans)
+
+	USER@LAPTOP-C1PG7FK4 MINGW64 ~/TerminalCommand/linux-content/Assignment (master)
+	
+	$ touch abc.txt def.txt ghi.txt jkl.txt
+
+
+	USER@LAPTOP-C1PG7FK4 MINGW64 ~/TerminalCommand/linux-content/Assignment (master)
+
+	$ ls
+
+	abc.txt  def.txt  ghi.txt  jkl.txt
+
+b) Print list of files to move
+	
+	ans)
+	
+	$ ls *.txt
+
+	abc.txt  def.txt  ghi.txt  jkl.txt
+
+c,d,e,f) Segregating and creating using basename and moving files to newly created folder and iteration.
+
+	ans)
+
+	$ nano text.sh
+
+	
+	#! /bin/bash
+	for filename in `ls *.txt`
+	do
+	foldername=`echo $filename | awk -F. '{print $1}'`
+	        if [ -d $foldername ]
+	        then
+	                rm -r $foldername
+	        fi
+	mkdir $foldername
+	cp $filename $foldername
+	echo $foldername"/"$filename
+	done
+
+
+	$ ./text.sh
+
+		abc/abc.txt
+		def/def.txt
+		ghi/ghi.txt
+		jkl/jkl.txt
+
+=============================================>>>>>>>>>>>>>>>>>>>>>*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================================	
+
+
+	APPEND CURRENT DATE TO ALL LOG FILES NAME WHICH HAS EXTENSION .LOG.1 FROM A FOLDER
+
+a) Create files with name abc.log.1, def.log.1, ghi.log.1, jkl.log.1, mno.log.1
+	ans)
+	
+	$ touch abc.log.1 def.log.1 ghi.log.1 jkl.log.1 mno.log.1
+
+
+b) print list of files to rename.
+	ans)
+	
+	$ ls *.log.1
+	
+	abc.log.1  def.log.1  ghi.log.1  jkl.log.1  mno.log.1
+
+d) print Date Command to show in ddmmyy
+	ans)
+		
+	$ date +%d%m%Y
+
+	23042021
+c,e,f) segregating Appending date to the log file and Iterating
+	ans)
+
+	$ nano timefile.sh
+
+	for file in `ls *.log.1`
+	
+	
+	#! /bin/bash
+	do
+        first=`echo $file |awk -F. '{print $1}'`
+        second=`echo $file |awk -F. '{print $2}'`
+        date=`date +%d%m%Y`
+        echo $first-$date.$second
+	done
+
+	$ ./timefile.sh
+
+	abc-23042021.log
+	def-23042021.log
+	ghi-23042021.log
+	jkl-23042021.log
+	mno-23042021.log
+
+
+=============================================>>>>>>>>>>>>>>>>>>>>>*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================================	
+
+	PRINT LIST OF LAST 10 UNIQUE SORTED CLIENT IP FROM VAR/LOG/HTTPD/ACCESS.LOG
+
+ans)
+
+a)	
+	$ cat access.log
+
+b)
+	$ cat access.log | awk '{print $1}'
+
+c)
+	$ cat access.log | awk '{print $1}' |sort| uniq -c
+
+d)
+	$ cat access.log | awk '{print $1}' |sort| uniq -c | head -4 | sort -n
+	
+	
+	    213 10.56.10.2
+	    261 10.56.0.3
+	    283 10.56.1.3
+	    345 10.56.19.3
+
+=============================================>>>>>>>>>>>>>>>>>>>>>*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================================	
+
+
+	PRINT LIST OF LAST 4 FREQUENTLY ACCESS UNIQUE URLS AT PARTICULAR HOURS FROM ACCESS.LOG
+
+ans)
+
+a) 
+	$ cat access.log
+
+b)
+	
+	$ cat access.log |awk -F: '{if($2==06 || $2==07 && $3<59) print $4}'
+
+c)
+	$ cat access.log |awk -F: '{if($2==06 || $2==07 && $3<59) print $0}' | sort | uniq -c | sort -n | head -4
+
+
+	1 10.56.0.3 - - [21/Sep/2019:06:37:40 +0000] "GET /login HTTP/1.1" 200 554 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.75 Safari/537.36" "114.79.180.62"
+	1 10.56.0.3 - - [21/Sep/2019:06:37:40 +0000] "GET /main.js HTTP/1.1" 200 165331 "https://fundoopush-dev.bridgelabz.com/login" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.75 Safari/537.36" "114.79.180.62"
+	1 10.56.0.3 - - [21/Sep/2019:06:37:40 +0000] "GET /polyfills.js HTTP/1.1" 200 45365 "https://fundoopush-dev.bridgelabz.com/login" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.75 Safari/537.36" "114.79.180.62"
+	1 10.56.0.3 - - [21/Sep/2019:06:37:40 +0000] "GET /runtime.js HTTP/1.1" 200 1710 "https://fundoopush-dev.bridgelabz.com/login" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.75 Safari/537.36" "114.79.180.62"
+
+
+=============================================>>>>>>>>>>>>>>>>>>>>>*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================================	
+
+
+	PRINT LAST 4 FREQUENTLY ACCESS URLS COUNT IN SORTED ORDER FROM ACCESS.LOG
+
+ans)
+
+  b)
+	$ cat access.log | awk '{print $7}' 
+
+  c)	
+	$ cat access.log | awk '{print $7}' | sort | uniq -c
+
+  d)  
+	$ cat access.log | awk '{print $7}' | sort | uniq -c | head -36 | tail -4
+
+
+	      1 /forums/
+	      1 /list.component.html
+	    190 /login
+	    196 /main.js
+	
+
+=============================================>>>>>>>>>>>>>>>>>>>>>*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================================	
+
+	PRINT LIST OF WEB RESPONSE CODE COUNT IN THE UNIQUE SORTED ORDER AT SPECIFIC HOURS
+
+a)
+	$ cat access.log
+
+b)
+	$ cat access.log | awk -F: '{if($2>01 && $2<10) print $0}'
+
+c)
+	$ cat access.log | awk -F: '{if($2>01 && $2<10) print $0}' | awk '{print $9}' | sort | uniq -c
+
+d)
+
+	$ cat access.log | awk -F: '{if($2>01 && $2<10) print $0}' | awk '{print $9}' | sort | uniq -c | head -4 | sort -n
+
+
+	      2 304
+	      4 206
+	   1084 200
+
+	
+=============================================>>>>>>>>>>>>>>>>>>>>>*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================================	
+
+	CREATE PROCESS LIST TABLE DISPLAY PROCESS ID, PARENT PROCESS ID, COMMAND NAME, % OF MEMEORY CONSUMPTION, % OF CPU UTILIZATION
+
+ans)
+
+	$ ps -elf | awk '{print $2,$3,$6}'
+
+	
+	PID PPID COMMAND
+	3585 1 /usr/bin/mintty
+	1102 1 /usr/bin/mintty
+	3586 3585 /usr/bin/bash
+	3963 3586 /usr/bin/ps
+	1103 1102 /usr/bin/bash
+	3964 3586 /usr/bin/bash
+
+
+=============================================>>>>>>>>>>>>>>>>>>>>>*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================================	
+
+	CHECK IF A FOLDER EXISTS OR NOT. IF IT'S NOT PRESENT, CREATE IT
+
+ans)
+
+a,b) checking and creating of folders if exists or not
+
+	$ nano folder.sh
+
+
+	#! /bin/bash
+
+	for filename in `ls *.txt *.pdf`
+	do
+	        foldername=`echo $filename | awk -F. '{print $1}'`
+	        if [ -d $foldername ]
+	        then
+	                echo "folder already exists"
+	        else
+	                mkdir $foldername
+	                echo ${foldername} "created"
+	        fi
+	done
+
+==>CHECKING
+	
+	$ ./folder.sh
+
+	folder already exists
+	folder already exists
+	folder already exists
+	folder already exists
+	folder already exists
+
+==> deleting a folder to check
+
+	
+	$ rm -r test
+
+==> deleted now creating
+	
+	
+	$ ./folder.sh
+
+	folder already exists
+	folder already exists
+	folder already exists
+	folder already exists
+	test created                   # the test folder was created in the current directory 
+
+	
+=============================================>>>>>>>>>>>>>>>>>>>>>*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================================	
+
+	EXECUTE COMMAND "HELLO" AND "LS" AND CHECK ITS EXECUTION STATUS AND PRINT WHETHER COMMAND EXECUTED SUCCESSFUL OR NOT
+
+a)
+	$ echo "hello"
+
+	hello
+b)
+
+	#! /bin/bash
+
+	echo 'hello' $?
+
+        	if [ $? -eq 0 ]
+        	then
+                	echo 'Command executed successfully'
+        	else
+                	echo 'Command not executed'
+        	fi
+
+
+	$ ./command.sh
+	
+	hello 0
+
+	Command executed successfully
+
+c)
+	
+	$ echo "ls"
+
+	ls
+
+d)	
+	
+	#! /bin/bash	
+
+	echo 'ls' $?
+        	if [ $? -eq 0 ]
+        	then
+                	echo "Command executed successfully"
+        	else
+                	echo "Command not executed"
+        	fi
+
+	$ ./command.sh
+	
+	ls 0
+	
+	Command executed successfully
+
+
+=============================================>>>>>>>>>>>>>>>>>>>>>*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================================	
+
+	ARCHIVE THE FILES FROM /VAR/LOG FOLDER WHICH HAVE MODIFIED 7DAYS AGO AND MOVE IT TO YOUR BACKUP FOLDER
+
+ans) 
+	
+a)
+	$ find -mtime -7
+
+b)
+
+	#! /bin/bash
+
+	for file in `ls | find -type f -mtime -7`
+
+	do
+        	mv $file backupfolder
+        	echo $file "is moved to backupfolder"
+	done
+
+
+	$ ./backup.sh
+	
+	./backup.sh is moved to backupfolder
+	
+	./backupfolder/backup.sh is moved to backupfolder
+
+
+
+
+
+	
+	
+	
+
+	
+	
+

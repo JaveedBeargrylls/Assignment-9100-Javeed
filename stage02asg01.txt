@@ -1,0 +1,468 @@
+Assignment - 03
+
+		**********Problems with for loop**********
+
+
+01)  Write a program that takes a command-line argument n and prints a table of the powers of 2 that are less than or equal to 2^n.
+
+$ nano power.sh
+
+! /bin/bash
+read -p "enter the number = " number
+for (( counter=1; counter<=number; counter++ ))
+do
+        power=$(( 2**counter ))
+        echo $power
+done
+
+output:-
+
+	$ ./power.sh
+	enter the number = 4
+	2
+	4
+	8
+	16
+
+
+03)  Write a program that takes a input and determines if the number is a prime.
+
+$ nano prime.sh
+
+#! /bin/bash
+read -p "enter the number" num
+for (( counter=2; counter<=num; counter++ ))
+do
+        if [ $(( num % counter )) -eq 0 ]
+        then
+                echo "not a prime number"
+                break
+        else
+                echo "prime number"
+                break
+        fi
+done
+
+output:-
+
+	$ ./prime.sh
+	enter the number7
+	prime number
+
+
+04)  Extend the program to take a range of number as input and output the Prime Numbers in that range.
+
+
+$ nano primerange.sh
+
+#! /bin/bash
+read -p "enter the lowerlimit = " lower_limit
+read -p "enter the upperlimit = " upper_limit
+for (( counter=lower_limit; counter<=upper_limit; counter++ ))
+do
+        for (( count=2; count<=counter; count++ ))
+        do
+                if [ $(( counter % count )) -eq 0 ]
+                then
+                        break
+                else
+                        echo $counter
+                        break     
+                fi
+        done
+done
+
+output:-
+
+	$ ./primerange.sh
+	enter the lowerlimit = 2
+	enter the upperlimit = 10
+	3
+	5
+	7
+	9
+
+05)  Write a program that computes a factorial of a number taken as input.
+
+$  nano fact.sh
+
+#! /bin/bash
+read -p "enter the number" num
+fact=1
+for (( counter=1; counter<=num; counter++ ))
+do
+        fact=$(( fact * counter ))
+done
+echo $fact
+
+output:-
+
+	$ ./fact.sh
+	enter the number5
+	120
+
+06)  Write a program to compute Factors of a number N using prime factorization method.
+	Logic -> Traverse till i*i <= N instead of i <= N for efficiency.
+	O/P -> Print the prime factors of number N.
+
+
+$ nano primefactor.sh
+
+#! /bin/bash
+read -p "enter the number" num
+fact=1
+for (( counter=1; counter<=num; counter++ ))
+do
+        for(( count=2; count<=counter; count++ ))
+        do
+                if [ $(( counter % count )) -eq 0 ]
+                then
+                        break
+                else
+                        fact=$(( fact * counter ))
+                        break
+                fi
+        done
+done
+echo $fact
+
+output:-
+
+	$ ./primefactor.sh
+	enter the number6
+	15
+
+02)  Write a program that takes a command-line argument n and prints the nth harmonic number. Harmonic Number is of the form
+
+
+$ nano harmonic.sh
+
+#! /bin/bash
+read -p "enter the number" num
+for (( counter=1; counter<=num; counter++ ))
+do
+        printf 1/$counter
+        if [ $counter -eq $num ]
+        then
+                break
+        else
+                printf " "+" "
+        fi
+done
+
+
+output:-
+
+	$ ./harmonic.sh
+	
+	enter the number7
+	1/1 + 1/2 + 1/3 + 1/4 + 1/5 + 1/6 + 1/7
+
+
+
+			**********Problems with while loop**********
+
+01)  Write a program that takes a command-line argument n and prints a table of the powers of 2 that are less than or equal to 2^n till 256 is reached..
+
+
+$ nano powertable.sh
+
+#! /bin/bash
+
+read -p "enter the number = " number
+num=1
+limit=256
+while [ $num -le $number -a $((2**num)) -le $limit ]
+do
+        power=$(( 2**num ))
+        num=$((num+1))
+        echo "2 power " $num " = " $power
+done
+
+output:-
+	$ ./powertable.sh
+	
+	enter the number = 20
+	2 power  2  =  2
+	2 power  3  =  4
+	2 power  4  =  8
+	2 power  5  =  16
+	2 power  6  =  32
+	2 power  7  =  64
+	2 power  8  =  128
+	2 power  9  =  256
+
+02)  Extend the Flip Coin problem till either Heads or Tails wins 11 times.
+
+$ nano coin.sh
+
+#! /bin/bash
+coin=$(( RANDOM%2 ))
+count=0
+while [ $count -lt 11 ]
+do
+        if [ $coin -eq 0 ]
+        then
+                echo "heads"
+        else
+                echo "tails"
+        fi
+count=$((count+1))
+done
+echo "total count" $count
+
+output:-
+	$ ./coin.sh
+	
+	heads
+	heads
+	heads
+	heads
+	heads
+	heads
+	heads
+	heads
+	heads
+	heads
+	heads
+	total count 11
+
+03)  Write a Program where a gambler starts with Rs 100 and places Re 1 bet until he/she goes broke i.e. no more money to gamble or reaches the goal of Rs 200. Keeps track of number of times won and number of bets made.
+
+$ nano harmonic.sh
+
+#! /bin/bash
+price=100
+goal=200
+count=0
+bet=0
+while [ $price -gt 0 -a $price -lt $goal ]
+do
+        start=$(( RANDOM%2 ))
+        if [ $start -eq 0 ]
+        then
+                # heads
+                #price adds 1 rs & tracking on wins value
+                price=$((price+1))
+                count=$((count+1))
+                wins=count
+                #winning times is count
+        else
+                #tails
+                price=$((price-1))
+        fi
+bet=$((bet+1))
+done
+echo "total number of bets= " $bet
+echo "wins" $count
+
+
+output:-
+	$ ./gambler.sh
+
+	total number of bets=  6644
+	wins 3372
+
+	$ ./gambler.sh
+	
+	total number of bets=  36350
+	wins 18125
+
+
+			**********Functions Practice Problems**********
+
+01)  Help user find degF or degC based on their Conversion Selection. Use Case Statement and ensure that the inputs are within the Freezing Point ( 0 °C / 32 °F ) and the Boiling Point of Water ( 100 °C / 212 °F )
+		a. degF = (degC * 9/5) + 32
+		b. degC = (degF – 32) * 5/9
+	
+$ nano tempcalculator.sh
+
+#! /bin/bash
+function degF_()
+{
+temp=$1
+        degF=$(( (temp * 9/5) + 32 ))
+        echo $degF
+}
+function degC_()
+{
+temp=$1
+        degC=$(( ( temp - 32 )*5/9 ))
+        echo $degC
+}
+echo "enter the choice to find 1.Celsius to Fahrenheit 2. Fahrenheit to Celsius"
+read -p "choice 1 or 2 = " choice
+case $choice in
+        1)
+                read -p "enter the temperature = " temp
+                if [ $temp -gt 0 -a $temp -lt 100 ]
+                then
+                        temp=$( degF_ $temp )
+                        echo " Temperature in Fahrenheit = " $temp "F"
+                else
+                        echo "enter the valid temperature read"
+                fi
+        ;;
+        2)
+                read -p "enter the temperature = " temp
+                if [ $temp -gt 32 -a $temp -lt 212 ]
+                then
+                        temp=$( degC_ $temp )
+                        echo " Temperature in Celsius = " $temp "C"
+                else
+                        echo "enter the valid temperature read "
+                fi
+        ;;
+        *)
+                echo "invalid choice"
+        ;;
+esac
+
+output:-
+	$ ./tempcalculator.sh
+
+	enter the choice to find 1.Celsius to Fahrenheit 2. Fahrenheit to Celsius
+	choice 1 or 2 = 1
+	enter the temperature = 10
+	 Temperature in Fahrenheit =  50 F
+
+	$ ./tempcalculator.sh
+
+	enter the choice to find 1.Celsius to Fahrenheit 2. Fahrenheit to Celsius
+	choice 1 or 2 = 2
+	enter the temperature = 50
+	 Temperature in Celsius =  10 C
+
+02)  Write a function to check if the two numbers are Palindromes
+
+
+#! /bin/bash
+function palindrome(){
+num=$1
+temp=$2
+limit=10
+count=0
+while [ $num -gt 0 -a $count -lt $limit ]
+do
+        if [ $(( $num )) -ge 0 ]
+        then
+                count=$(( num%10 ))
+                rev=$(( rev *10 + count ))
+                num=$(( num/10 ))
+        fi
+done
+        if [ $(( rev )) -eq $2 ]
+        then
+                echo "palindrome"
+        else
+                echo "not palindrome"
+        fi
+}
+
+read -p "Enter a Number = " num1
+read -p "Enter a number = " num2
+palindrome=$( palindrome $num1 $num2)
+echo $palindrome
+
+output:-
+	$ ./palindrom.sh
+
+	Enter a Number = 121
+	Enter a number = 321
+	not palindrome
+
+03)   Take a number from user and check if the number is a Prime then show that its palindrome is also prime
+	a. Write function check if number is Prime
+	b. Write function to get the Palindrome.
+	c. Check if the Palindrome number is also prime
+
+$ nano primepali.sh
+
+
+#! /bin/bash/
+function prime()
+{
+num=$1
+for (( count=2;count<num;count++ ))
+do
+        if [ $((num%count)) -eq 0 ]
+        then
+                break
+        fi
+done
+if [ $num -eq $count ]
+then
+echo "prime number"
+else
+echo "number is not prime"
+fi
+
+}
+
+
+function palindrom()
+{
+num=$1
+remainder=0
+reverse=0
+
+while [ $num -ne 0 ]
+do
+remainder=$((num%10))
+reverse=$((reverse*10+remainder))
+num=$((num/10))
+done
+
+if [ $((reverse)) -eq $1 ]
+then
+echo "number is palindrom and  "
+num1=$reverse
+else
+echo "number is not palindrom and "
+fi
+
+for (( count=2; count<reverse; count++ ))
+do
+        if [ $((reverse%count)) -eq 0 ]
+        then
+                break
+        fi
+done
+if [ $reverse -eq $count ]
+then
+        echo "prime number"
+else
+        echo "not a prime number"
+fi
+}
+read -p "Enter a number to check prime " num
+prime=$(prime $num)
+echo $prime
+palindrom=$(palindrom $num)
+echo $palindrom
+
+
+
+
+output:-
+
+	$ ./sample1.sh
+
+	Enter a number to check prime 13
+	prime number
+	number is not palindrom and prime number
+
+	$ ./sample1.sh
+
+	Enter a number to check prime 555
+	number is not prime
+	number is palindrom and not a prime number
+
+
+
+
+
+
+
+
+
