@@ -1,0 +1,188 @@
+Assignment - 03
+
+01)  Write a program in the following steps
+	a. Generates 10 Random 3 Digit number.
+	b. Store this random numbers into a array.
+	c. Then find the 2nd largest and the 2nd smallest element without sorting the array.
+
+$ nano arrays01.sh
+
+#! /bin/bash
+declare -a arrays
+        for (( count=0; count<10; count++ ))
+        do
+                arrays[$count]=$(( RANDOM%(1000-100)+100 ))
+                done
+                echo ${arrays[@]}
+
+largest=${array[0]}
+secondGreatest=0
+
+for((i=1; i < ${#arrays[@]}; i++))
+do
+  if [[ ${arrays[i]} > $largest ]]
+  then
+    secondGreatest=$largest
+    largest=${arrays[i]}
+elif (( ${arrays[i]} > $secondGreatest ))
+then
+    secondGreatest=${arrays[i]}
+  fi
+done
+
+echo "second greatest =" $secondGreatest
+
+smallest=${arrays[0]}
+secondsmallest=0
+
+for((i=1; i < ${#arrays[@]}; i++))
+do
+  if [[ ${arrays[i]} < $smallest ]]
+  then
+    secondsmallest=$smallest
+    smallest=${arrays[i]}
+elif (( ${arrays[i]} < $secondsmallest ))
+then
+    secondsmallest=${arrays[i]}
+  fi
+done
+echo "secondsmallest = $secondsmallest"
+
+output:- 
+
+	$ ./arrays01.sh
+	708 720 997 987 986 750 457 379 931 291
+
+	second greatest = 987
+	secondsmallest = 379
+02)  Extend the above program to sort the array and then find the 2nd largest and the 2nd smallest element.
+
+$ nano arrays02.sh
+
+#! /bin/bash
+declare -a arrays
+        for (( count=0; count<10; count++ ))
+        do
+                arrays[$count]=$(( RANDOM%(1000-100)+100 ))
+                done
+                echo ${arrays[@]}
+for ((i = 0; i<10; i++))
+do
+
+    for((j = 0; j<10; j++))
+    do
+
+        if [[ ${arrays[j]} > ${arrays[$((j+1))]} ]]
+        then
+            temp=${arrays[j]}
+            arrays[$j]=${arrays[$((j+1))]}
+            arrays[$((j+1))]=$temp
+        fi
+    done
+done
+
+echo "Array in sorted order :"
+echo ${arrays[@]}
+echo "second smallest number is = " ${arrays[1]}
+echo "second greatest number is = " ${arrays[-2]}
+
+
+output:- 
+
+	$ ./arrays02.sh
+	738 679 868 542 344 785 793 875 962 487
+	
+	Array in sorted order :
+	344 487 542 679 738 785 793 868 875 962
+
+	second smallest number is =  344
+	second greatest number is =  875
+
+03)  Extend the Prime Factorization Program to store all the Prime Factors of a number n into an array and finally display the output.
+
+$ nano arrays03.sh
+
+#! /bin/bash
+declare -a array
+read -p "enter a number" num
+for(( count=2; num>1; count++))
+do
+
+        while [ $((num%count)) -eq 0 ]
+        do
+        #array[0]=$count
+        array[$count]=$count
+        num=$((num/count))
+        done
+done
+echo ${array[@]}
+
+output:-
+
+	$ ./arrays03.sh
+
+	enter a number15
+	
+	3 5
+
+04)  Write a Program to show Sum of three Integer adds to ZERO
+
+$ nano arrays04.sh
+
+#! /bin/bash
+declare -a array
+array=(1 2 3 4 5 6 -3 -2 -1)
+echo ${array[@]}
+n=${#array[@]}
+echo ""
+for (( count=0; count<n-2; count++ ))
+do
+        for (( count1=count+1; count1<n-1; count1++ ))
+        do
+                for((count2=count1+1; count2<n; count2++ ))
+                do
+                        if [ $((${array[count]}+${array[count1]}+${array[count2]})) -eq 0 ]
+                        then
+                                echo ${array[count]}  ${array[count1]} ${array[count2]}
+                fi
+
+                done
+        done
+done
+
+echo "count =" ${#array[@]}
+echo "index= " ${!array[@]}
+
+
+output:-
+
+	$ ./arrays04.sh
+	1 2 3 4 5 6 -3 -2 -1
+
+	1 2 -3
+	3 -2 -1
+	4 -3 -1
+	5 -3 -2
+	count = 9
+	index=  0 1 2 3 4 5 6 7 8
+
+05)  Take a range from 0 – 100, find the digits that are repeated twice like 33, 77, etc and store them in an array
+
+$ nano arrays05.sh
+
+#! /bin/bash
+declare -a array
+for ((counter=1; counter<100; counter++ ))
+do
+        if [ $((counter%11)) -eq 0 ]
+        then
+            array[$counter]=$counter
+        fi
+done
+echo ${array[@]}
+
+
+output:- 
+	$ ./arrays05.sh
+
+	11 22 33 44 55 66 77 88 99
